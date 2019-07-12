@@ -105,8 +105,8 @@ solve.DEB.food<-function(params, inits, duration, feeding.events){
   parms = as.numeric(params[1:24])
   params = c(iM=parms[1], k=parms[2], M=parms[3], EM=parms[4], Fh=parms[5], muD=parms[6],
              DR=parms[7], fe=parms[8], yRP=parms[9], ph=parms[10], yPE=parms[11], iPM=parms[12],
-             eh=parms[13], mP=parms[14], alpha=parms[15], yEF=parms[16], LM=parms[17],kd=parms[18], 
-             z=parms[19], kk=parms[20], hb=parms[21], theta=parms[22], mR=parms[23], yVE=parms[24], startage=28)
+             eh=parms[13], mP=parms[14], alpha=parms[15], yEF=parms[16], LM=parms[17],kR=parms[18], 
+             delta0=parms[19], hdelta=parms[20], hb=parms[21], theta=parms[22], mR=parms[23], yVE=parms[24], startage=28)
   
   Sup.6 <- data.frame(lsoda(inits, 0:duration, func = "derivs", dllname = "IndividualModel_Shrink_P_dilute", 
                             initfunc = "initmod",  nout=2, outnames=c("Survival", "LG"), maxsteps=5e5,
@@ -209,8 +209,8 @@ solve.DEB.starve<-function(params, inits, duration){
   parms = as.numeric(params[1:25])
   params = c(iM=parms[1], k=parms[2], M=parms[3], EM=parms[4], Fh=parms[5], muD=parms[6],
              DR=parms[7], fe=parms[8], yRP=parms[9], ph=parms[10], yPE=parms[11], iPM=parms[12],
-             eh=parms[13], mP=parms[14], alpha=parms[15], yEF=parms[25], LM=parms[17],kd=parms[18], 
-             z=parms[19], kk=parms[20], hb=parms[21], theta=parms[22], mR=parms[23], yVE=parms[24], startage=14)
+             eh=parms[13], mP=parms[14], alpha=parms[15], yEF=parms[25], LM=parms[17],kR=parms[18], 
+             delta0=parms[19], hdelta=parms[20], hb=parms[21], theta=parms[22], mR=parms[23], yVE=parms[24], startage=14)
   
   # Simulate dynamics for 1-0
   food_1_0 = periodic.starvation.events(2.69, 0, 14, 18)
@@ -314,7 +314,7 @@ prior.likelihood = function(x){
   prior.lik = with(as.list(x),
                    sum(dbeta(c(yPE, yEF, yEF2, yRP, yVE, mP, eh, k, fe), 1, 1, log=T)) + 
                      sum(dunif(c(sd.LI1, sd.LU1, sd.EI1, sd.EU1, sd.W1, sd.LI2, sd.LU2, sd.EI2, sd.EU2, sd.W2), min=0, max=10, log=T)) +
-                     sum(dunif(c(ph, alpha, iPM, EM, DR, Fh, muD, kd, z, kk, theta, mR, hb), min=0, max=1000000, log=T)) +
+                     sum(dunif(c(ph, alpha, iPM, EM, DR, Fh, muD, kR, delta0, hdelta, theta, mR, hb), min=0, max=1000000, log=T)) +
                      dnorm(iM, mean=0.0183, sd=0.0016, log=T) + dnorm(M, mean=0.004, sd=0.00047, log=T) + dnorm(LM, mean=35, sd=2, log=T)
   )
   return(prior.lik)
@@ -411,7 +411,7 @@ pars = samps$samples[which.max(samps$log.p),]
 pars = as.numeric(pars[1:35])
 names(pars) = c("iM", "k", "M", "EM", "Fh", "muD", "DR", "fe", "yRP",
                 "ph", "yPE", "iPM", "eh", "mP", "alpha", "yEF", "LM",
-                "kd", "z", "kk", "hb", "theta", "mR", "yVE", "yEF2",
+                "kR", "delta0", "hdelta", "hb", "theta", "mR", "yVE", "yEF2",
                 "sd.LI1", "sd.LU1", "sd.EI1", "sd.EU1", "sd.W1", 
                 "sd.LI2", "sd.LU2", "sd.EI2", "sd.EU2", "sd.W2")
 

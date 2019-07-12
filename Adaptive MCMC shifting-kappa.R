@@ -90,9 +90,9 @@ feeding.events <- function(dates, var="F", value, method="replace", Infected=0){
 dur.R = 245 # Resource supply
 dur.P = 140 # Periodic starvation
 
-in.F = setinits.Food()
-in.S = setinits.Starve()
-Feed.F = feeding.events(dates = sort(c((1:35)*7,((1:35)*7 - 3))), var="F", in.F[1], method="replace", Infected=28)
+in.R = setinits.Food()
+in.P = setinits.Starve()
+Feed.R = feeding.events(dates = sort(c((1:35)*7,((1:35)*7 - 3))), var="F", in.R[1], method="replace", Infected=28)
 
 
 # 4 - Functions to solve DEBs
@@ -319,7 +319,7 @@ prior.likelihood = function(x){
 # 6 - data likelihood
 full.likelihood<-function(x){
   # simulate data
-  sim.data = make.states(x, in.F, in.S, dur.R, dur.P, Feed.F, w.t=7)
+  sim.data = make.states(x, in.R, in.P, dur.R, dur.P, Feed.R, w.t=7)
   
   # data likelihood
   e.c<-1
